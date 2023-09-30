@@ -1,16 +1,14 @@
-/* eslint-disable no-underscore-dangle */
-
 class AlbumsHandler {
   constructor(service, songsService, validator) {
-    this._service = service;
-    this._songsService = songsService;
-    this._validator = validator;
+    this.service = service;
+    this.songsService = songsService;
+    this.validator = validator;
   }
 
   async postAlbumHandler(request, h) {
-    this._validator.validateAlbumPayload(request.payload);
+    this.validator.validateAlbumPayload(request.payload);
 
-    const albumId = await this._service.addAlbum(request.payload);
+    const albumId = await this.service.addAlbum(request.payload);
 
     const response = h.response({
       status: 'success',
@@ -24,7 +22,7 @@ class AlbumsHandler {
   }
 
   async getAlbumsHandler() {
-    const albums = await this._service.getAlbums();
+    const albums = await this.service.getAlbums();
 
     return {
       status: 'success',
@@ -37,8 +35,8 @@ class AlbumsHandler {
   async getAlbumByIdHandler(request, h) {
     const { id } = request.params;
 
-    const album = await this._service.getAlbumById(id);
-    let songs = await this._songsService.getSongsByAlbumId(id);
+    const album = await this.service.getAlbumById(id);
+    let songs = await this.songsService.getSongsByAlbumId(id);
 
     songs = songs.map((song) => ({
       id: song.id,
@@ -58,10 +56,10 @@ class AlbumsHandler {
   }
 
   async putAlbumByIdHandler(request, h) {
-    this._validator.validateAlbumPayload(request.payload);
+    this.validator.validateAlbumPayload(request.payload);
     const { id } = request.params;
 
-    await this._service.editAlbumById(id, request.payload);
+    await this.service.editAlbumById(id, request.payload);
 
     const response = h.response({
       status: 'success',
@@ -74,7 +72,7 @@ class AlbumsHandler {
   async deleteAlbumByIdHandler(request, h) {
     const { id } = request.params;
 
-    await this._service.deleteAlbumById(id);
+    await this.service.deleteAlbumById(id);
 
     const response = h.response({
       status: 'success',
